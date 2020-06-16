@@ -54,8 +54,6 @@ namespace Azure.Iot.Hub.Service
         public IoTHubServiceClient(string connectionString, Azure.Iot.Hub.Service.IoTHubServiceClientOptions options) { }
         public IoTHubServiceClient(string hostName, string sharedAccessPolicy, string sharedAccessKey) { }
         public IoTHubServiceClient(string hostName, string sharedAccessPolicy, string sharedAccessKey, Azure.Iot.Hub.Service.IoTHubServiceClientOptions options) { }
-        public IoTHubServiceClient(System.Uri endpoint, Azure.Core.TokenCredential credential) { }
-        public IoTHubServiceClient(System.Uri endpoint, Azure.Core.TokenCredential credential, Azure.Iot.Hub.Service.IoTHubServiceClientOptions options) { }
         public virtual Azure.Iot.Hub.Service.DevicesClient Devices { get { throw null; } }
         public virtual Azure.Iot.Hub.Service.FilesClient Files { get { throw null; } }
         public virtual Azure.Iot.Hub.Service.JobsClient Jobs { get { throw null; } }

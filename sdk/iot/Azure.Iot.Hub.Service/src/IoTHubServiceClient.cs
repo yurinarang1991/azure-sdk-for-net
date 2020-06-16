@@ -179,55 +179,6 @@ namespace Azure.Iot.Hub.Service
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="IoTHubServiceClient"/> class.
-        /// </summary>
-        /// <param name="endpoint">
-        /// The IoT Hub service instance URI to connect to.
-        /// </param>
-        /// <param name="credential">
-        /// The <see cref="TokenCredential"/> implementation which will be used to request for the authentication token.
-        /// </param>
-        public IoTHubServiceClient(Uri endpoint, TokenCredential credential)
-            : this(endpoint, credential, new IoTHubServiceClientOptions())
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="IoTHubServiceClient"/> class.
-        /// </summary>
-        /// <param name="endpoint">
-        /// The IoT Hub service instance URI to connect to.
-        /// </param>
-        /// <param name="credential">
-        /// The <see cref="TokenCredential"/> implementation which will be used to request for the authentication token.
-        /// </param>
-        /// <param name="options">
-        /// Options that allow configuration of requests sent to the IoT Hub service.
-        /// </param>
-        public IoTHubServiceClient(Uri endpoint, TokenCredential credential, IoTHubServiceClientOptions options)
-        {
-            Argument.AssertNotNull(options, nameof(options));
-
-            _endpoint = endpoint;
-            _clientDiagnostics = new ClientDiagnostics(options);
-
-            options.AddPolicy(new BearerTokenAuthenticationPolicy(credential, GetAuthorizationScopes(_endpoint)), HttpPipelinePosition.PerCall);
-            _httpPipeline = HttpPipelineBuilder.Build(options);
-
-            _registryManagerRestClient = new RegistryManagerRestClient(_clientDiagnostics, _httpPipeline, _endpoint, options.GetVersionString());
-            _twinRestClient = new TwinRestClient(_clientDiagnostics, _httpPipeline, null, options.GetVersionString());
-            _deviceMethodRestClient = new DeviceMethodRestClient(_clientDiagnostics, _httpPipeline, _endpoint, options.GetVersionString());
-
-            Devices = new DevicesClient(_registryManagerRestClient, _twinRestClient, _deviceMethodRestClient);
-            Modules = new ModulesClient(_registryManagerRestClient, _twinRestClient, _deviceMethodRestClient);
-
-            Statistics = new StatisticsClient();
-            Messages = new CloudToDeviceMessagesClient();
-            Files = new FilesClient();
-            Jobs = new JobsClient();
-        }
-
-        /// <summary>
         /// Gets the scope for authentication/authorization policy.
         /// </summary>
         /// <param name="endpoint">The IoT Hub service instance Uri.</param>
