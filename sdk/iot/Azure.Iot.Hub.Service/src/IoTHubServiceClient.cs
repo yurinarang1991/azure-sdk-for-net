@@ -82,14 +82,14 @@ namespace Azure.Iot.Hub.Service
         /// </param>
         public IoTHubServiceClient(string connectionString, IoTHubServiceClientOptions options)
         {
-            Argument.AssertNotNull(connectionString, nameof(connectionString));
             Argument.AssertNotNull(options, nameof(options));
 
             var iotHubConnectionString = new IotHubConnectionString(connectionString);
             var sasTokenProvider = new SasTokenProviderWithSharedAccessKey(
                 iotHubConnectionString.HostName,
                 iotHubConnectionString.SharedAccessPolicy,
-                iotHubConnectionString.SharedAccessKey);
+                iotHubConnectionString.SharedAccessKey,
+                options.SasTokenTimeToLive);
 
             _endpoint = BuildEndpointUriFromHostName(iotHubConnectionString.HostName);
 
@@ -124,7 +124,7 @@ namespace Azure.Iot.Hub.Service
         /// <param name="sharedAccessKey">
         /// The IoT Hub shared access key associated with the shared access policy permissions."/>
         /// </param>
-        public IoTHubServiceClient(string hostName, string sharedAccessPolicy, string sharedAccessKey)
+        public IoTHubServiceClient(string hostName, string sharedAccessPolicy, AzureKeyCredential sharedAccessKey)
             : this(hostName, sharedAccessPolicy, sharedAccessKey, new IoTHubServiceClientOptions())
         {
         }
@@ -146,17 +146,15 @@ namespace Azure.Iot.Hub.Service
         /// <param name="options">
         /// Options that allow configuration of requests sent to the IoT Hub service.
         /// </param>
-        public IoTHubServiceClient(string hostName, string sharedAccessPolicy, string sharedAccessKey, IoTHubServiceClientOptions options)
+        public IoTHubServiceClient(string hostName, string sharedAccessPolicy, AzureKeyCredential sharedAccessKey, IoTHubServiceClientOptions options)
         {
-            Argument.AssertNotNull(hostName, nameof(hostName));
-            Argument.AssertNotNull(sharedAccessPolicy, nameof(sharedAccessPolicy));
-            Argument.AssertNotNull(sharedAccessKey, nameof(sharedAccessKey));
             Argument.AssertNotNull(options, nameof(options));
 
             var sasTokenProvider = new SasTokenProviderWithSharedAccessKey(
                 hostName,
                 sharedAccessPolicy,
-                sharedAccessKey);
+                sharedAccessKey,
+                options.SasTokenTimeToLive);
 
             _endpoint = BuildEndpointUriFromHostName(hostName);
 
@@ -176,20 +174,6 @@ namespace Azure.Iot.Hub.Service
             Messages = new CloudToDeviceMessagesClient();
             Files = new FilesClient();
             Jobs = new JobsClient();
-        }
-
-        /// <summary>
-        /// Gets the scope for authentication/authorization policy.
-        /// </summary>
-        /// <param name="endpoint">The IoT Hub service instance Uri.</param>
-        /// <returns>List of scopes for the specified endpoint.</returns>
-        internal static string[] GetAuthorizationScopes(Uri endpoint)
-        {
-            Argument.AssertNotNull(endpoint, nameof(endpoint));
-            Argument.AssertNotNullOrEmpty(endpoint.AbsoluteUri, nameof(endpoint.AbsoluteUri));
-
-            // TODO: GetAuthorizationScopes for IoT Hub
-            return null;
         }
 
         private static Uri BuildEndpointUriFromHostName(string hostName)

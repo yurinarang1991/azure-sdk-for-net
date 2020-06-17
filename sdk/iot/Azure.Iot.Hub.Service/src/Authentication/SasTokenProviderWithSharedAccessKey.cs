@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System;
+using Azure.Core;
 
 namespace Azure.Iot.Hub.Service.Authentication
 {
@@ -10,9 +11,6 @@ namespace Azure.Iot.Hub.Service.Authentication
     /// </summary>
     internal class SasTokenProviderWithSharedAccessKey : ISasTokenProvider
     {
-        // The default time to live for a sas token is set to 30 minutes.
-        private static readonly TimeSpan s_defaultTimeToLive = TimeSpan.FromMinutes(30);
-
         // Time buffer before expiry when the token should be renewed, expressed as a percentage of the time to live.
         // The token will be renewed when it has 15% or less of the sas token's lifespan left.
         private const int s_renewalTimeBufferPercentage = 15;
@@ -32,12 +30,21 @@ namespace Azure.Iot.Hub.Service.Authentication
         {
         }
 
-        internal SasTokenProviderWithSharedAccessKey(string hostName, string sharedAccessPolicy, string sharedAccessKey, TimeSpan? timeToLive = null)
+        internal SasTokenProviderWithSharedAccessKey(string hostName, string sharedAccessPolicy, AzureKeyCredential sharedAccessKey, TimeSpan timeToLive)
         {
+            Argument.AssertNotNullOrWhiteSpace(hostName, nameof(hostName));
+            Argument.AssertNotNullOrWhiteSpace(sharedAccessPolicy, nameof(sharedAccessPolicy));
+            Argument.AssertNotNullOrWhiteSpace(sharedAccessKey.Key, nameof(sharedAccessKey));
+
+            if (timeToLive.CompareTo(TimeSpan.Zero) < 0)
+            {
+                throw new ArgumentException("The value for SasTokenTimeToLive cannot be a negative TimeSpan", nameof(timeToLive));
+            }
+
             _hostName = hostName;
             _sharedAccessPolicy = sharedAccessPolicy;
-            _sharedAccessKey = sharedAccessKey;
-            _timeToLive = timeToLive ?? s_defaultTimeToLive;
+            _sharedAccessKey = sharedAccessKey.Key;
+            _timeToLive = timeToLive;
 
             _cachedSasToken = null;
         }

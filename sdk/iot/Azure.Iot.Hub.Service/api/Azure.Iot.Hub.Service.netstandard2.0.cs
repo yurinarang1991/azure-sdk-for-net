@@ -52,8 +52,8 @@ namespace Azure.Iot.Hub.Service
         protected IoTHubServiceClient() { }
         public IoTHubServiceClient(string connectionString) { }
         public IoTHubServiceClient(string connectionString, Azure.Iot.Hub.Service.IoTHubServiceClientOptions options) { }
-        public IoTHubServiceClient(string hostName, string sharedAccessPolicy, string sharedAccessKey) { }
-        public IoTHubServiceClient(string hostName, string sharedAccessPolicy, string sharedAccessKey, Azure.Iot.Hub.Service.IoTHubServiceClientOptions options) { }
+        public IoTHubServiceClient(string hostName, string sharedAccessPolicy, Azure.AzureKeyCredential sharedAccessKey) { }
+        public IoTHubServiceClient(string hostName, string sharedAccessPolicy, Azure.AzureKeyCredential sharedAccessKey, Azure.Iot.Hub.Service.IoTHubServiceClientOptions options) { }
         public virtual Azure.Iot.Hub.Service.DevicesClient Devices { get { throw null; } }
         public virtual Azure.Iot.Hub.Service.FilesClient Files { get { throw null; } }
         public virtual Azure.Iot.Hub.Service.JobsClient Jobs { get { throw null; } }
@@ -64,6 +64,7 @@ namespace Azure.Iot.Hub.Service
     public partial class IoTHubServiceClientOptions : Azure.Core.ClientOptions
     {
         public IoTHubServiceClientOptions(Azure.Iot.Hub.Service.IoTHubServiceClientOptions.ServiceVersion version = Azure.Iot.Hub.Service.IoTHubServiceClientOptions.ServiceVersion.V2020_03_13) { }
+        public System.TimeSpan SasTokenTimeToLive { get { throw null; } set { } }
         public Azure.Iot.Hub.Service.IoTHubServiceClientOptions.ServiceVersion Version { get { throw null; } }
         public enum ServiceVersion
         {

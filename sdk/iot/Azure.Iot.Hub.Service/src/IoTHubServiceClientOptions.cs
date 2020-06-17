@@ -33,6 +33,12 @@ namespace Azure.Iot.Hub.Service
         public ServiceVersion Version { get; }
 
         /// <summary>
+        /// The validity duration of the generated shared access signature token used for authentication.
+        /// The token will be renewed when at 15% or less of it's lifespan. The default value is 30 minutes.
+        /// </summary>
+        public TimeSpan SasTokenTimeToLive { get; set; } = TimeSpan.FromMinutes(30);
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="IoTHubServiceClientOptions"/>
         /// class.
         /// </summary>
@@ -40,7 +46,6 @@ namespace Azure.Iot.Hub.Service
         {
             Version = version;
         }
-
 
         internal string GetVersionString()
         {

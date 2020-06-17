@@ -18,8 +18,8 @@ namespace Azure.Iot.Hub.Service.Authentication
         {
             var iotHubConnectionString = ConnectionString.Parse(connectionString);
 
-            SharedAccessKey = iotHubConnectionString.GetNonRequired(SharedAccessKeyIdentifier);
-            SharedAccessPolicy = iotHubConnectionString.GetNonRequired(SharedAccessKeyNameIdentifier);
+            SharedAccessKey = new AzureKeyCredential(iotHubConnectionString.GetRequired(SharedAccessKeyIdentifier));
+            SharedAccessPolicy = iotHubConnectionString.GetRequired(SharedAccessKeyNameIdentifier);
 
             HostName = iotHubConnectionString.GetRequired(HostNameIdentifier);
         }
@@ -28,6 +28,6 @@ namespace Azure.Iot.Hub.Service.Authentication
 
         internal string SharedAccessPolicy { get; }
 
-        internal string SharedAccessKey { get; }
+        internal AzureKeyCredential SharedAccessKey { get; }
     }
 }
