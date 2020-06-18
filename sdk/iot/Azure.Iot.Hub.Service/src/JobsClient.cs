@@ -41,7 +41,7 @@ namespace Azure.Iot.Hub.Service
         public virtual Response<JobProperties> CreateExportDevicesJob(
             Uri outputBlobContainerUri,
             bool excludeKeys,
-            JobRequestOptions options = default,
+            ExportJobRequestOptions options = default,
             CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNull(outputBlobContainerUri, nameof(outputBlobContainerUri));
@@ -52,7 +52,7 @@ namespace Azure.Iot.Hub.Service
                 OutputBlobContainerUri = outputBlobContainerUri.ToString(),
                 ExcludeKeysInExport = excludeKeys,
                 StorageAuthenticationType = options?.AuthenticationType,
-                OutputBlobName = options?.BloblName
+                OutputBlobName = options?.OutputBlobName
             };
 
             return _jobRestClient.CreateImportExportJob(jobProperties, cancellationToken);
@@ -66,7 +66,11 @@ namespace Azure.Iot.Hub.Service
         /// <param name="options">The optional settings for this request.</param>
         /// <param name="cancellationToken">Task cancellation token.</param>
         /// <returns>JobProperties of the newly created job.</returns>
-        public virtual Task<Response<JobProperties>> CreateExportDevicesJobAsync(Uri outputBlobContainerUri, bool excludeKeys, JobRequestOptions options = default, CancellationToken cancellationToken = default)
+        public virtual Task<Response<JobProperties>> CreateExportDevicesJobAsync(
+            Uri outputBlobContainerUri,
+            bool excludeKeys,
+            ExportJobRequestOptions options = default,
+            CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNull(outputBlobContainerUri, nameof(outputBlobContainerUri));
 
@@ -76,7 +80,67 @@ namespace Azure.Iot.Hub.Service
                 OutputBlobContainerUri = outputBlobContainerUri.ToString(),
                 ExcludeKeysInExport = excludeKeys,
                 StorageAuthenticationType = options?.AuthenticationType,
-                OutputBlobName = options?.BloblName
+                OutputBlobName = options?.OutputBlobName
+            };
+
+            return _jobRestClient.CreateImportExportJobAsync(jobProperties, cancellationToken);
+        }
+
+        /// <summary>
+        /// Creates a job to import device registrations into the IoT Hub.
+        /// </summary>
+        /// <param name="importBlobContainerUri">URI containing SAS token to a blob container that contains registry data to sync.</param>
+        /// <param name="outputBlobContainerUri">URI containing SAS token to a blob container. This is used to output the status of the job.</param>
+        /// <param name="options">The optional settings for this request.</param>
+        /// <param name="cancellationToken">Task cancellation token.</param>
+        /// <returns>JobProperties of the newly created job.</returns>
+        public virtual Response<JobProperties> CreateImportDevicesJob(
+            Uri importBlobContainerUri,
+            Uri outputBlobContainerUri,
+            ImportJobRequestOptions options = default,
+            CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNull(importBlobContainerUri, nameof(importBlobContainerUri));
+            Argument.AssertNotNull(outputBlobContainerUri, nameof(outputBlobContainerUri));
+
+            var jobProperties = new JobProperties
+            {
+                Type = JobPropertiesType.Import,
+                InputBlobContainerUri = importBlobContainerUri.ToString(),
+                OutputBlobContainerUri = outputBlobContainerUri.ToString(),
+                StorageAuthenticationType = options?.AuthenticationType,
+                OutputBlobName = options?.OutputBlobName,
+                InputBlobName = options?.InputBloblName
+            };
+
+            return _jobRestClient.CreateImportExportJob(jobProperties, cancellationToken);
+        }
+
+        /// <summary>
+        /// Creates a job to import device registrations into the IoT Hub.
+        /// </summary>
+        /// <param name="importBlobContainerUri">URI containing SAS token to a blob container that contains registry data to sync.</param>
+        /// <param name="outputBlobContainerUri">URI containing SAS token to a blob container. This is used to output the status of the job.</param>
+        /// <param name="options">The optional settings for this request.</param>
+        /// <param name="cancellationToken">Task cancellation token.</param>
+        /// <returns>JobProperties of the newly created job.</returns>
+        public virtual Task<Response<JobProperties>> CreateImportDevicesJobAsync(
+            Uri importBlobContainerUri,
+            Uri outputBlobContainerUri,
+            ImportJobRequestOptions options = default,
+            CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNull(importBlobContainerUri, nameof(importBlobContainerUri));
+            Argument.AssertNotNull(outputBlobContainerUri, nameof(outputBlobContainerUri));
+
+            var jobProperties = new JobProperties
+            {
+                Type = JobPropertiesType.Import,
+                InputBlobContainerUri = importBlobContainerUri.ToString(),
+                OutputBlobContainerUri = outputBlobContainerUri.ToString(),
+                StorageAuthenticationType = options?.AuthenticationType,
+                OutputBlobName = options?.OutputBlobName,
+                InputBlobName = options?.InputBloblName
             };
 
             return _jobRestClient.CreateImportExportJobAsync(jobProperties, cancellationToken);
