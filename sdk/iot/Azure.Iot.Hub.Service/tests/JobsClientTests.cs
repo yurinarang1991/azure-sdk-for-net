@@ -23,7 +23,7 @@ namespace Azure.Iot.Hub.Service.Tests
         public async Task Jobs_Lifecycle()
         {
             // TODO: This is just a verification that tests run and it requires the tester to complete this test however they see fit.
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse("DefaultEndpointsProtocol=https;AccountName=barustumrg1sa;AccountKey=xp1+xABVhJGvU4IpJldfzizl5184Hn+letTlmK0SzLlqbWo67ZQtzwyVzKPip7vEbooZAFnol8XAjLL+xElWDA==;EndpointSuffix=core.windows.net");
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse("");
             CloudBlobClient cloudBlobClient = storageAccount.CreateCloudBlobClient();
             CloudBlobContainer CloudBlobContainer = cloudBlobClient.GetContainerReference("jobs");
 
