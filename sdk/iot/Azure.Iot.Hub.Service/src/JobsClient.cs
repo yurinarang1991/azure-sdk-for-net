@@ -48,6 +48,7 @@ namespace Azure.Iot.Hub.Service
 
             var jobProperties = new JobProperties
             {
+                Type = JobPropertiesType.Export,
                 OutputBlobContainerUri = outputBlobContainerUri.ToString(),
                 ExcludeKeysInExport = excludeKeys,
                 StorageAuthenticationType = options?.AuthenticationType,
@@ -71,6 +72,7 @@ namespace Azure.Iot.Hub.Service
 
             var jobProperties = new JobProperties
             {
+                Type = JobPropertiesType.Export,
                 OutputBlobContainerUri = outputBlobContainerUri.ToString(),
                 ExcludeKeysInExport = excludeKeys,
                 StorageAuthenticationType = options?.AuthenticationType,
