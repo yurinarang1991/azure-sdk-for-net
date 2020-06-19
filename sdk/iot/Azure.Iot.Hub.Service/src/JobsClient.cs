@@ -145,5 +145,27 @@ namespace Azure.Iot.Hub.Service
 
             return _jobRestClient.CreateImportExportJobAsync(jobProperties, cancellationToken);
         }
+
+        /// <summary>
+        /// List all import and export jobs for the IoT Hub.
+        /// </summary>
+        /// <param name="cancellationToken">Task cancellation token</param>
+        /// <returns>IEnumerable of JobProperties of all jobs for this IoT Hub.</returns>
+        public virtual Response<IReadOnlyList<JobProperties>> GetImportExportJobs(CancellationToken cancellationToken = default)
+        {
+            return _jobRestClient.GetImportExportJobs(cancellationToken);
+        }
+
+        /// <summary>
+        /// List all import and export jobs for the IoT Hub.
+        /// </summary>
+        /// <param name="cancellationToken">Task cancellation token</param>
+        /// <returns>IEnumerable of JobProperties of all jobs for this IoT Hub.</returns>
+        public virtual Task<Response<IReadOnlyList<JobProperties>>> GetImportExportJobsAsync(CancellationToken cancellationToken = default)
+        {
+            return _jobRestClient.GetImportExportJobsAsync(cancellationToken);
+        }
+
+
     }
 }
