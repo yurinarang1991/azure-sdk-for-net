@@ -166,6 +166,31 @@ namespace Azure.Iot.Hub.Service
             return _jobRestClient.GetImportExportJobsAsync(cancellationToken);
         }
 
+        /// <summary>
+        /// Gets the import or export job with the specified ID.
+        /// </summary>
+        /// <param name="jobId">Id of the Job object to retrieve</param>
+        /// <param name="cancellationToken">Task cancellation token</param>
+        /// <returns>JobProperties of the job specified by the provided jobId.</returns>
+        public virtual Response<JobProperties> GetImportExportJob(string jobId, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNullOrEmpty(jobId, nameof(jobId));
+
+            return _jobRestClient.GetImportExportJob(jobId, cancellationToken);
+        }
+
+        /// <summary>
+        /// Gets the import or export job with the specified ID.
+        /// </summary>
+        /// <param name="jobId">Id of the Job object to retrieve</param>
+        /// <param name="cancellationToken">Task cancellation token</param>
+        /// <returns>JobProperties of the job specified by the provided jobId.</returns>
+        public virtual Task<Response<JobProperties>> GetImportExportJobAsync(string jobId, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNullOrEmpty(jobId, nameof(jobId));
+
+            return _jobRestClient.GetImportExportJobAsync(jobId, cancellationToken);
+        }
 
     }
 }

@@ -70,6 +70,38 @@ namespace Azure.Iot.Hub.Service.Tests
             }
         }
 
+        [Test]
+        public async Task Jobs_GetImportExportJobs_E2E()
+        {
+            // setup
+            IoTHubServiceClient client = GetClient();
+
+            // act
+            try
+            {
+                Response<System.Collections.Generic.IReadOnlyList<JobProperties>> response = await client.Jobs.GetImportExportJobsAsync().ConfigureAwait(false);
+            }
+            catch (RequestFailedException ex) when (ex.Status == (int)HttpStatusCode.NotFound)
+            {
+            }
+        }
+
+        [Test]
+        public async Task Jobs_GetImportExportJob_E2E()
+        {
+            // setup
+            IoTHubServiceClient client = GetClient();
+
+            // act
+            try
+            {
+                Response<JobProperties> response = await client.Jobs.GetImportExportJobAsync("4710a036-da2b-4979-be0d-bfb7fa3e8441").ConfigureAwait(false);
+            }
+            catch (RequestFailedException ex) when (ex.Status == (int)HttpStatusCode.NotFound)
+            {
+            }
+        }
+
         private static async Task<Uri> GetSasUri(string storageAccountConnectionString, string containerName)
         {
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(storageAccountConnectionString);
